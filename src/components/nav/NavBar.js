@@ -6,10 +6,18 @@ export const NavBar = () => {
     return (
         <ul className="navbar">
             <li className="navbar__item">
-                Navigation link
+                <button className="btn btn-2 btn-sep icon-create"
+                    onClick={() => {
+                        navigate({ pathname: "/games/new" })
+                    }}
+                >Register New Game</button>
             </li>
             <li className="navbar__item">
-                Navigation link
+            <button className="btn btn-2 btn-sep icon-create"
+                    onClick={() => {
+                        navigate({ pathname: "/events/new" })
+                    }}
+                >Create New Event</button>
             </li>
             <li className="navbar__item">
                 Navigation link
