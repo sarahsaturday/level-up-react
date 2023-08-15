@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
-import { createEvent, getEventTypes } from '../../managers/EventManager.js'
+import { createEvent, getEvents } from '../../managers/EventManager.js'
 
 
 export const EventForm = () => {
@@ -19,12 +19,21 @@ export const EventForm = () => {
     })
 
     useEffect(() => {
-        // TODO: Get the game types, then set the state
-    }, [])
+        getEvents()
+            .then(types => {
+                setEvents(types);
+            })
+    }, []);
+    
 
     const changeEventState = (domEvent) => {
-        // TODO: Complete the onChange function
+        const { name, value } = domEvent.target;
+        setCurrentEvent(prevEvent => ({
+            ...prevEvent,
+            [name]: value
+        }));
     }
+    
 
     return (
         <form className="eventForm">

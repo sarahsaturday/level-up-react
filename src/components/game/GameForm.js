@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
-import { createGame, getGameTypes } from '../../managers/GameManager.js'
+import { createGame, getGames } from '../../managers/GameManager.js'
 
 
 export const GameForm = () => {
     const navigate = useNavigate()
-    const [gameTypes, setGameTypes] = useState([])
+    const [games, setGames] = useState([])
 
     /*
         Since the input fields are bound to the values of
@@ -14,17 +14,26 @@ export const GameForm = () => {
     */
     const [currentGame, setCurrentGame] = useState({
         title: "",
-        gamer: 0,
         type: 0
-    })
+    });
 
     useEffect(() => {
-        // TODO: Get the game types, then set the state
-    }, [])
+        getGames()
+            .then((games) => setGames(games))
+            .catch((error) => {
+                // Handle error
+            });
+    }, []);
 
-    const changeGameState = (domEvent) => {
-        // TODO: Complete the onChange function
-    }
+
+    const changeGameState = (event) => {
+        const { name, value } = event.target;
+        setCurrentGame((prevGame) => ({
+            ...prevGame,
+            [name]: value
+        }));
+    };
+
 
     return (
         <form className="gameForm">
@@ -39,15 +48,15 @@ export const GameForm = () => {
                 </div>
             </fieldset>
 
-            <fieldset>
+            {/* <fieldset>
                 <div className="form-group">
-                    <label htmlFor="organizer">Organizer: </label>
-                    <input type="text" name="organizer" required autoFocus className="form-control"
-                        value={currentGame.organizer}
+                    <label htmlFor="gamer">Player: </label>
+                    <input type="text" name="gamer" required autoFocus className="form-control"
+                        value={currentGame.gamer}
                         onChange={changeGameState}
                     />
                 </div>
-            </fieldset>
+            </fieldset> */}
 
             <fieldset>
                 <div className="form-group">
@@ -60,24 +69,26 @@ export const GameForm = () => {
             </fieldset>
 
 
-            <button type="submit"
+            <button
+                type="submit"
                 onClick={evt => {
-                    // Prevent form from being submitted
-                    evt.preventDefault()
+                    evt.preventDefault();
 
                     const game = {
-                        maker: currentGame.maker,
+                        game_type: currentGame.type,
                         title: currentGame.title,
-                        number_of_players: parseInt(currentGame.numberOfPlayers),
-                        skill_level: parseInt(currentGame.skillLevel),
-                        game_type: parseInt(currentGame.gameTypeId)
-                    }
+                    };
 
-                    // Send POST request to your API
                     createGame(game)
                         .then(() => navigate("/games"))
+                        .catch((error) => {
+                            // Handle error
+                        });
                 }}
-                className="btn btn-primary">Create</button>
+                className="btn btn-primary"
+            >
+                Create
+            </button>
         </form>
     )
 }

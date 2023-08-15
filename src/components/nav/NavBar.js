@@ -20,7 +20,18 @@ export const NavBar = () => {
                 >Create New Event</button>
             </li>
             <li className="navbar__item">
-                Navigation link
+            <button className="btn btn-2 btn-sep icon-create"
+                    onClick={() => {
+                        navigate({ pathname: "/games" })
+                    }}
+                >Games List</button>
+            </li>
+            <li className="navbar__item">
+            <button className="btn btn-2 btn-sep icon-create"
+                    onClick={() => {
+                        navigate({ pathname: "/events" })
+                    }}
+                >Events List</button>
             </li>
             {
                 (localStorage.getItem("lu_token") !== null) ?
